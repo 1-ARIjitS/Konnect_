@@ -10,7 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".DashboardActivity"
-            android:label="Meet"></activity>
+            android:label="Meet"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".LoginActivity"
             android:label="Login" />
