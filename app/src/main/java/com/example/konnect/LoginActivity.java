@@ -24,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText password;
 
     FirebaseAuth auth;
-
+    String emailBox,pass;
     ProgressDialog dialog;
 
 
@@ -48,7 +48,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.show();
-                String emailBox,pass;
                 emailBox=email.getText().toString();
                 pass=password.getText().toString();
 
@@ -73,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this,SignUpActivity.class));
+                    startActivity(new Intent(LoginActivity.this,SignUpActivity.class));
             }
         });
 

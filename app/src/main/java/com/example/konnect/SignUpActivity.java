@@ -27,7 +27,7 @@ public class SignUpActivity extends AppCompatActivity {
     EditText nameBox;
 
     FirebaseAuth auth;
-
+    String emailBox,pass,name;
     FirebaseFirestore database;
 
 
@@ -51,7 +51,6 @@ public class SignUpActivity extends AppCompatActivity {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String emailBox, pass, name;
                 emailBox = email.getText().toString();
                 pass = password.getText().toString();
                 name=nameBox.getText().toString();
@@ -75,7 +74,8 @@ public class SignUpActivity extends AppCompatActivity {
                                         }
                                     });
                             Toast.makeText(SignUpActivity.this,"Account Successfully Created", Toast.LENGTH_SHORT).show();
-                        } else {
+                        }
+                        else {
                             Toast.makeText(SignUpActivity.this, task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -86,7 +86,7 @@ public class SignUpActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SignUpActivity.this,LoginActivity.class));
+                    startActivity(new Intent(SignUpActivity.this,LoginActivity.class));
             }
         });
     }
