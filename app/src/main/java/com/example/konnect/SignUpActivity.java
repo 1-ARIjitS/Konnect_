@@ -27,7 +27,7 @@ public class SignUpActivity extends AppCompatActivity {
     EditText nameBox;
 
     FirebaseAuth auth;
-    String emailBox,pass,name;
+    String emailBox, pass, name;
     FirebaseFirestore database;
 
 
@@ -45,7 +45,7 @@ public class SignUpActivity extends AppCompatActivity {
         nameBox = findViewById(R.id.username);
         auth = FirebaseAuth.getInstance();
 
-        database=FirebaseFirestore.getInstance();
+        database = FirebaseFirestore.getInstance();
 
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
@@ -53,40 +53,51 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View v) {
                 emailBox = email.getText().toString();
                 pass = password.getText().toString();
-                name=nameBox.getText().toString();
+                name = nameBox.getText().toString();
 
-                final users user=new users();
+                final users user = new users();
                 user.setEmail(emailBox);
                 user.setPass(pass);
                 user.setName(name);
 
-                auth.createUserWithEmailAndPassword(emailBox, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
+                if (emailBox.isEmpty() && pass.isEmpty() && name.isEmpty()) {
+                    Toast.makeText(SignUpActivity.this, "Invalid,Blank Field", Toast.LENGTH_SHORT).show();
+                } else if (emailBox.isEmpty()) {
+                    Toast.makeText(SignUpActivity.this, "Invalid,please enter an Email Id", Toast.LENGTH_SHORT).show();
+                } else if (pass.isEmpty()) {
+                    Toast.makeText(SignUpActivity.this, "Invalid,please enter a Password", Toast.LENGTH_SHORT).show();
+                } else if (name.isEmpty()) {
+                    Toast.makeText(SignUpActivity.this, "Invalid,please enter an Username", Toast.LENGTH_SHORT).show();
+                } else if (pass.length() < 6) {
+                    Toast.makeText(SignUpActivity.this, "password is too short", Toast.LENGTH_SHORT).show();
+                } else {
+                    auth.createUserWithEmailAndPassword(emailBox, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
 
-                            database.collection("Users")
-                                    .document().set(user)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            startActivity(new Intent(SignUpActivity.this,LoginActivity.class));
-                                        }
-                                    });
-                            Toast.makeText(SignUpActivity.this,"Account Successfully Created", Toast.LENGTH_SHORT).show();
+                                database.collection("Users")
+                                        .document().set(user)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+                                            }
+                                        });
+                                Toast.makeText(SignUpActivity.this, "Account Successfully Created", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(SignUpActivity.this, task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        else {
-                            Toast.makeText(SignUpActivity.this, task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                    });
+                }
             }
         });
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    startActivity(new Intent(SignUpActivity.this,LoginActivity.class));
+                startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
             }
         });
     }

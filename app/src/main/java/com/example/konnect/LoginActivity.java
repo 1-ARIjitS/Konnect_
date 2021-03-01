@@ -24,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText password;
 
     FirebaseAuth auth;
-    String emailBox,pass;
+    String emailBox, pass;
     ProgressDialog dialog;
 
 
@@ -33,46 +33,53 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        loginButton=findViewById(R.id.login);
+        loginButton = findViewById(R.id.login);
         signUpButton = findViewById(R.id.newAccount);
 
-        auth=FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
 
-        email=findViewById(R.id.email);
-        password=findViewById(R.id.password);
+        email = findViewById(R.id.email);
+        password = findViewById(R.id.password);
 
-        dialog=new ProgressDialog (this);
+        dialog = new ProgressDialog(this);
         dialog.setMessage("Please Wait...");
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.show();
-                emailBox=email.getText().toString();
-                pass=password.getText().toString();
-
-                auth.signInWithEmailAndPassword(emailBox,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        dialog.dismiss();
-                        if(task.isSuccessful())
-                        {
-                            startActivity(new Intent(LoginActivity.this,DashboardActivity.class));
-                            Toast.makeText(LoginActivity.this,"Successfully Logged in",Toast.LENGTH_SHORT).show();
+                emailBox = email.getText().toString();
+                pass = password.getText().toString();
+                dialog.dismiss();
+                if (emailBox.isEmpty() && pass.isEmpty()) {
+                    Toast.makeText(LoginActivity.this, "Invalid,Blank Field", Toast.LENGTH_SHORT).show();
+                } else if (emailBox.isEmpty()) {
+                    Toast.makeText(LoginActivity.this, "Invalid,please enter an Email Id", Toast.LENGTH_SHORT).show();
+                } else if (pass.isEmpty()) {
+                    Toast.makeText(LoginActivity.this, "Invalid,please enter a Password", Toast.LENGTH_SHORT).show();
+                } else if (pass.length() < 6) {
+                    Toast.makeText(LoginActivity.this, "password is too short", Toast.LENGTH_SHORT).show();
+                } else {
+                    auth.signInWithEmailAndPassword(emailBox, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            dialog.dismiss();
+                            if (task.isSuccessful()) {
+                                startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
+                                Toast.makeText(LoginActivity.this, "Successfully Logged in", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(LoginActivity.this, task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        else
-                        {
-                            Toast.makeText(LoginActivity.this,task.getException().getLocalizedMessage(),Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                    });
+                }
             }
         });
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    startActivity(new Intent(LoginActivity.this,SignUpActivity.class));
+                startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
             }
         });
 
