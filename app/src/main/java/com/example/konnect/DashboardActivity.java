@@ -35,7 +35,11 @@ public class DashboardActivity extends AppCompatActivity {
         share = findViewById(R.id.shareButton);
         join = findViewById(R.id.joinButton);
         logout = findViewById(R.id.logout_button);
+
+
         meetCode = meet.getText().toString();
+
+
         auth = FirebaseAuth.getInstance();
 
         URL serverUrl;
@@ -56,34 +60,26 @@ public class DashboardActivity extends AppCompatActivity {
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (meetCode.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Invlaid,Blank Field please enter a valid meeting code", Toast.LENGTH_SHORT).show();
-                } else {
                     JitsiMeetConferenceOptions options = new JitsiMeetConferenceOptions.Builder()
                             .setRoom(meet.getText().toString())
                             .setWelcomePageEnabled(false)
                             .build();
 
                     JitsiMeetActivity.launch(DashboardActivity.this, options);
-                }
+
             }
         });
 
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (meetCode.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Invlaid,Blank Field please enter a valid meeting code", Toast.LENGTH_SHORT).show();
-                } else {
                     Intent intent = new Intent(Intent.ACTION_SENDTO);
                     intent.setData(Uri.parse("mailto:"));
                     intent.putExtra(Intent.EXTRA_TEXT, "Here is the code to join the meeting" + " " + meetCode);
                     intent.putExtra(Intent.EXTRA_SUBJECT, "classified meeting code");
                     if (intent.resolveActivity(getPackageManager()) != null) {
                         startActivity(intent);
-                    }
+
                 }
             }
         });
