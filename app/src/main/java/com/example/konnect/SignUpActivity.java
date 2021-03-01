@@ -3,6 +3,7 @@ package com.example.konnect;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -30,6 +31,8 @@ public class SignUpActivity extends AppCompatActivity {
     String emailBox, pass, name;
     FirebaseFirestore database;
 
+    ProgressDialog dialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,9 @@ public class SignUpActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         database = FirebaseFirestore.getInstance();
+
+        dialog=new ProgressDialog(this);
+        dialog.setMessage("Please Wait While We Are Creating Your Account...");
 
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
@@ -71,11 +77,12 @@ public class SignUpActivity extends AppCompatActivity {
                 } else if (pass.length() < 6) {
                     Toast.makeText(SignUpActivity.this, "password is too short", Toast.LENGTH_SHORT).show();
                 } else {
+                    dialog.show();
                     auth.createUserWithEmailAndPassword(emailBox, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
+                            dialog.dismiss();
                             if (task.isSuccessful()) {
-
                                 database.collection("Users")
                                         .document().set(user)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {

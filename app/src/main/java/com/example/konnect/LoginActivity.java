@@ -47,10 +47,8 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.show();
                 emailBox = email.getText().toString();
                 pass = password.getText().toString();
-                dialog.dismiss();
                 if (emailBox.isEmpty() && pass.isEmpty()) {
                     Toast.makeText(LoginActivity.this, "Invalid,Blank Field", Toast.LENGTH_SHORT).show();
                 } else if (emailBox.isEmpty()) {
@@ -59,7 +57,9 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Invalid,please enter a Password", Toast.LENGTH_SHORT).show();
                 } else if (pass.length() < 6) {
                     Toast.makeText(LoginActivity.this, "password is too short", Toast.LENGTH_SHORT).show();
-                } else {
+                }
+                else {
+                    dialog.show();
                     auth.signInWithEmailAndPassword(emailBox, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
