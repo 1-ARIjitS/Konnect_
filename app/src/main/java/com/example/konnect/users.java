@@ -2,9 +2,10 @@ package com.example.konnect;
 
 public class users {
 
-    public String name,email,pass;
-    public users()
-    {}
+    public String name, email, pass;
+
+    public users() {
+    }
 
     public String getName() {
         return name;

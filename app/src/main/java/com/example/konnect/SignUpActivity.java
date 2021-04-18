@@ -50,7 +50,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         database = FirebaseFirestore.getInstance();
 
-        dialog=new ProgressDialog(this);
+        dialog = new ProgressDialog(this);
         dialog.setMessage("Please Wait While We Are Creating Your Account...");
 
 
